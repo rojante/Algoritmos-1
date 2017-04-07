@@ -1,0 +1,109 @@
+#include <conio.h>
+#include <iostream>
+#include <string.h>
+#include<iomanip>
+#define FIL 100
+#define COL 100
+using namespace std;
+struct tcadena{
+	char cad[FIL];
+};
+
+bool verfEsVocal(char car);
+int contarVocales (char cad[]);
+void invertirCad(char cad[]);
+void eliminarVocales(char cad[]);
+void cargarMatDeCad(tcadena mat[FIL][COL], int n, int m);
+void mostrarMatDeCad(tcadena mat[FIL][COL], int n, int m);
+
+void main(){
+	tcadena mat[FIL][COL];
+	int n ,m;
+	char cad[80];
+	//cout<<"Intriduzca Cadena: ";
+	//gets_s(cad);
+	//cout<<"La cantidad de vocales es :"<<contarVocales(cad);
+	//eliminarVocales(cad);
+	//cout<<cad;
+	cout<<"introduzca el numero de filas: ";
+	cin>>n;
+	cout<<"introduzca el numero de columnas: ";
+	cin>>m;
+	cargarMatDeCad(mat,n,m);
+	mostrarMatDeCad(mat,n,m);
+getch();
+}
+
+
+bool verfEsVocal(char car){
+	if (car=='a'||car=='e'||car=='i'||car=='o'||car=='u'||car=='A'||car=='E'||car=='I'||car=='O'||car=='U')
+		return(true);
+	else
+		return(false);
+}
+
+int contarVocales (char cad[]){
+	int i, n=strlen(cad), c=0;
+		for(i=0;i<n;i++)
+		{
+			if(verfEsVocal(cad[i])==true)
+			{
+				c++;
+			}
+		}
+		return(c);
+}
+
+void eliminarVocales(char cad[]){
+	int i,j,n=strlen(cad);
+		for(i=0;i<n;i++)
+		{
+			if(verfEsVocal(cad[i])==true)
+			{
+				for(j=i;j<n-1;j++)
+				{
+					cad[j]=cad[j+1];
+				}
+				i--;
+				n--;
+			}
+		}
+		cad[n]='\0';
+}
+
+void invertirCad(char cad[]){
+	int i, n=strlen(cad);
+	char aux;
+		for(i=0;i<n/2;i++)
+		{
+			aux=cad[i];
+			cad[i]=cad[n-1-i];
+			cad[n-1-i]=aux;
+		}
+}
+
+void cargarMatDeCad(tcadena mat[FIL][COL], int n, int m){
+	int i, j;
+		for(i=0;i<n;i++)
+		{
+			for(j=0;j<m;j++)
+			{
+				cout<<"Intrduzca cadena: "<<endl;
+				do{
+				gets(mat[i][j].cad);
+				} while(strlen(mat[i][j].cad)==0);
+			}
+		}
+}
+
+void mostrarMatDeCad(tcadena mat[FIL][COL], int n, int m){
+	int i, j;
+		for(i=0;i<n;i++)
+		{
+			for(j=0;j<m;j++)
+			{
+				cout<<setw(8)<<mat[i][j].cad<<" ";
+			}
+			cout<<endl;
+		}
+}
