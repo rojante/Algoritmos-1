@@ -1,0 +1,87 @@
+#include <iostream>
+#include <conio.h>
+#include <stdio.h>
+using namespace std;
+
+struct regAmigos{
+		char	nombre[30];
+		char	sexo;
+		int		edad;
+		char	estado;
+};
+
+void crearArchivo (char nombArch[]){
+	FILE *ptr;
+	ptr=fopen(nombArch,"wb");
+	fclose(ptr);
+}
+
+void adicionarAmigo (){
+	FILE *ptr;
+	regAmigos reg;
+	ptr=fopen("amigos.dat","ab");
+	cout<<"Introducir nombre: ";
+	do{
+		gets(reg.nombre);
+	} while(strlen(reg.nombre)==0); //Valida para no permitir cadenas vacias
+	
+	do{
+		cout<<"Introducir Sexo <M/F>: ";
+		cin>> reg.sexo;
+	} while	(reg.sexo!='M' && reg.sexo!='F'); //Valida la entrada para sexo
+	do{
+		cout<<"Introducir Edad:";
+		cin>> reg.edad;
+	} while (reg.edad < 1 || reg.edad > 100); //Valida el rago de edad
+	reg.estado='A';
+	fwrite(&reg,sizeof(reg),1,ptr); //Escribe registro en archivo
+	fclose(ptr);
+}
+
+void listarAmigos (){
+	FILE *ptr;
+	regAmigos reg;
+	ptr=fopen("amigos.dat","rb");
+	if(ptr==NULL)
+	{
+		cout<<"Error con el archivo" ;
+	}
+	else{
+		fread(&reg,sizeof(reg),1,ptr);//lee registro desde archivo
+		while(feof(ptr)==false) //mientras no sea fin de archivo
+		{
+			if(reg.estado=='A') //verificar si el registro esta activo
+			{
+				cout<<"Nombre:"<<reg.nombre<<endl<<"Sexo:"<<reg.sexo<<endl<<"Edad:"<<reg.edad<<endl;
+			}
+			fread(&reg,sizeof(reg),1,ptr); //Lee registro desde archivo
+		}
+	fclose(ptr);
+	}
+}
+	
+
+
+void main(){
+	regAmigos reg;
+	int opcion;
+	do{
+	cout<<"                    MENU           "<<endl;
+	cout<<"1. Crear archivo de amigos"<<endl;
+	cout<<"2. Adicionar amigos"<<endl;
+	cout<<"3. Lista de Amigos"<<endl;
+	cout<<"0. Salir"<<endl;
+	cout<<endl<<"Elige una opcion: ";
+	cin>>opcion;
+	switch (opcion){
+		case 1: crearArchivo("amigos.dat"); 
+				break;
+		case 2: adicionarAmigo();
+				break;
+		case 3: listarAmigos ();
+				break;
+		}
+	}while(opcion!=0);
+}
+
+
